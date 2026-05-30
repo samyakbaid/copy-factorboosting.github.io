@@ -483,9 +483,9 @@ body {
 .factor-tooltip-trigger::after {
     content: attr(data-tooltip);
     position: absolute;
-    left: 50%;
+    left: 0;
     bottom: calc(100% + 12px);
-    transform: translateX(-50%) translateY(6px);
+    transform: translateY(6px);
     width: 260px;
     padding: 10px 12px;
     border-radius: 12px;
@@ -509,9 +509,9 @@ body {
 .factor-tooltip-trigger::before {
     content: "";
     position: absolute;
-    left: 50%;
+    left: 20px;
     bottom: calc(100% + 4px);
-    transform: translateX(-50%) translateY(6px);
+    transform: translateY(6px);
     border-width: 8px 7px 0 7px;
     border-style: solid;
     border-color: rgba(18, 18, 24, 0.92) transparent transparent transparent;
@@ -530,7 +530,7 @@ body {
 .factor-tooltip-trigger.tooltip-open::before {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
 }
 
 .factor-tooltip-trigger:hover,

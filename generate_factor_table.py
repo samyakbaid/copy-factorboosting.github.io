@@ -1,14 +1,14 @@
 import csv
 import sys
 
-def calculate_compounded_return(returns):
+def calculate_compounded_return(returns, is_percent_input=True):
     """
     Calculates compounded return from a list of returns.
-    Assumes Fama French factors are given in percent (e.g., 1.5 = 1.5%).
-    If your data is already in decimals (e.g., 0.015 = 1.5%), change divisor to 1.0.
+    Assumes Fama French factors are given in percent (e.g., 1.5 = 1.5%) if is_percent_input is True.
+    If is_percent_input is False, input is in decimals (e.g., 0.015 = 1.5%).
+    Always returns the compounded value in percent format.
     """
-    is_percent = True
-    divisor = 100.0 if is_percent else 1.0
+    divisor = 100.0 if is_percent_input else 1.0
     
     # Filter out empty strings or invalid data
     valid_returns = []
@@ -26,8 +26,8 @@ def calculate_compounded_return(returns):
         # Convert to decimals for compounding: (1 + r)
         compounded *= (r / divisor) + 1.0
         
-    # Convert back to original scale
-    compounded = (compounded - 1.0) * divisor
+    # Convert back to percent scale for the output string
+    compounded = (compounded - 1.0) * 100.0
     return f"{compounded:.2f}"
 
 def main():
@@ -70,17 +70,19 @@ def main():
     results = []
     
     for factor in factors:
+        is_mkt = (factor == 'MKT')
         try:
             val_1m = float(last_1_row.get(factor, ''))
-            val_1m_str = f"{val_1m:.2f}"
+            # If it's MKT, it's already a percent. Otherwise, multiply by 100.
+            val_1m_str = f"{val_1m:.2f}" if is_mkt else f"{val_1m * 100.0:.2f}"
         except ValueError:
             val_1m_str = "NaN"
             
         last_3_vals = [row.get(factor, '') for row in last_3_rows]
         last_12_vals = [row.get(factor, '') for row in last_12_rows]
         
-        val_3m_str = calculate_compounded_return(last_3_vals)
-        val_12m_str = calculate_compounded_return(last_12_vals)
+        val_3m_str = calculate_compounded_return(last_3_vals, is_percent_input=is_mkt)
+        val_12m_str = calculate_compounded_return(last_12_vals, is_percent_input=is_mkt)
         
         results.append({
             'Factor': factor_mapping[factor],
