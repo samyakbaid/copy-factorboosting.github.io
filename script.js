@@ -15,7 +15,7 @@ const publicationsData = [
     },
     {
         title: "Documentation for Portfolio Optimization",
-        venue: "(Working Documentation",
+        venue: "(Working Documentation)",
         year: 2026,
         citations: 0,
         type: "conference",
@@ -83,9 +83,7 @@ function populateTable(tableId, data) {
 
         row.innerHTML = `
             <td><strong>${pub.title}</strong></td>
-            <td>${pub.venue}</td>
             <td>${pub.year}</td>
-            <td>${pub.citations}</td>
             <td>${linksHtml}</td>
         `;
 

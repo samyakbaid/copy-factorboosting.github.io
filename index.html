@@ -44,8 +44,6 @@
                     <a class="primary-btn" href="backtester.html">Open Analysis Studio</a>
                     <a class="secondary-btn" href="#documentation">Read Methodology</a>
                 </div>
-
-                <span class="hero-updated">Last updated: <span id="lastUpdated"></span></span>
             </div>
             <div class="hero-visual" aria-label="Portfolio analytics dashboard preview">
                 <div class="visual-shell" data-focus="all">
@@ -185,71 +183,23 @@
             <div class="section-kicker">Latest factor snapshot</div>
             <h2 class="section-title">Research Factors & Portfolios</h2>
 
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="factors">Research Factors</button>
-                <button class="tab-btn" data-tab="bookmarket">Size & Book-to-Market</button>
-                <button class="tab-btn" data-tab="profitability">Size & Operational Profitability</button>
+            <div class="tabs" style="display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; justify-content: space-between;">
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button class="tab-btn active" data-tab="factors">Research Factors</button>
+                    <button class="tab-btn" data-tab="bookmarket">Size & Book-to-Market</button>
+                    <button class="tab-btn" data-tab="profitability">Size & Operating Profitability</button>
+                    <button class="tab-btn" data-tab="investment">Size & Investment</button>
+                    <button class="tab-btn" data-tab="momentum">Momentum</button>
+                </div>
+                <a href="backtester.html" class="nav-cta" style="text-decoration: none; padding: 0.5rem 1rem; border-radius: 0.25rem;">Launch Interactive Tool</a>
             </div>
 
             <!-- Research Factors Tab -->
             <div class="tab-content active" data-content="factors">
                 <div class="factor-tables">
-                    <!-- Fama/French 3 Research Factors -->
+                    <!-- 5 Research Factors + Momentum -->
                     <div class="factor-group">
-                        <h3 class="factor-title">Fama/French 3 Research Factors</h3>
-                        <div class="table-container">
-                            <table class="data-table factor-table">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>March 2026</th>
-                                        <th>Last 3 Months</th>
-                                        <th>Last 12 Months</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td class="factor-name">
-                                            <span class="factor-tooltip-trigger" tabindex="0"
-                                                data-tooltip="Rm-Rf = Market Risk Premium. Measures the excess return of the market portfolio over the risk-free rate.">
-                                                Rm-Rf (Using Nifty 500)
-                                            </span>
-                                        </td>
-                                        <td class="positive">-8.17</td>
-                                        <td class="negative">4.53</td>
-                                        <td class="positive">-4.89</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="factor-name">
-                                            <span class="factor-tooltip-trigger" tabindex="0"
-                                                data-tooltip="SMB = Small Minus Big. Measures the size factor: small-cap stocks minus large-cap stocks.">
-                                                SMB
-                                            </span>
-                                        </td>
-                                        <td class="negative">-35.25</td>
-                                        <td class="negative">-31.70</td>
-                                        <td class="positive">-19.59</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="factor-name">
-                                            <span class="factor-tooltip-trigger" tabindex="0"
-                                                data-tooltip="HML = High Minus Low. Measures the value factor: high book-to-market stocks minus low book-to-market stocks.">
-                                                HML
-                                            </span>
-                                        </td>
-                                        <td class="negative">24.15</td>
-                                        <td class="negative">6.49</td>
-                                        <td class="negative">11.38</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <br>
-                    <!-- Six research return factors -->
-                    <div class="factor-group">
-                        <h3 class="factor-title">Six Research Return Factors</h3>
+                        <h3 class="factor-title">5 Research Factors + Momentum</h3>
                         <div class="table-container">
                             <table class="data-table factor-table">
                                 <thead>
@@ -653,9 +603,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Venue</th>
                                 <th>Year</th>
-                                <th>Citations</th>
                                 <th>Links</th>
                             </tr>
                         </thead>
@@ -672,9 +620,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Venue</th>
                                 <th>Year</th>
-                                <th>Citations</th>
                                 <th>Links</th>
                             </tr>
                         </thead>
@@ -691,9 +637,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Venue</th>
                                 <th>Year</th>
-                                <th>Citations</th>
                                 <th>Links</th>
                             </tr>
                         </thead>
@@ -710,9 +654,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Venue</th>
                                 <th>Year</th>
-                                <th>Citations</th>
                                 <th>Links</th>
                             </tr>
                         </thead>
@@ -818,6 +760,7 @@
     <footer class="footer">
         <div class="footer-content">
             <p>&copy; 2025 Safexpress Center for Data Learning and Decision Sciences | All rights reserved</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: #a1a1aa;">Last updated: <span id="lastUpdated"></span></p>
         </div>
     </footer>
 
