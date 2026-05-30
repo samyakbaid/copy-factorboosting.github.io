@@ -31,7 +31,7 @@ const BT = (() => {
             'Investment':     { col: 'Inv_Label',      labels: { 'C': 'Conservative', 'N': 'Neutral', 'A': 'Aggressive' } },
             'Momentum':       { col: 'Momentum_Label', labels: { 'W': 'Winner',       'N': 'Neutral', 'L': 'Loser' } },
         },
-        'Other Factors': {
+        'Extended Factors': {
             'Asset Turnover':      { col: 'AT_Label',  labels: { 'H': 'High',  'N': 'Neutral', 'L': 'Low' } },
             'Sales Growth':        { col: 'SG_Label',  labels: { 'H': 'High',  'N': 'Neutral', 'L': 'Low' } },
             'Accruals':            { col: 'ACC_Label', labels: { 'C': 'Conservative', 'N': 'Neutral', 'A': 'Aggressive' } },
@@ -58,9 +58,9 @@ const BT = (() => {
     let activeHoldingsId = null, currentMonthIdx = 0, runMonths = [];
     let benchmarkSeries = {};
     let activeBenchmarkId = 'nifty50';
-    let showBenchmark = true;
+    let showBenchmark = false;
     let heatmapOpen = false, heatmapPortfolioId = null;
-    let activeFactors = new Set(['Momentum']);
+    let activeFactors = new Set(['Size', 'Book-to-Market', 'Momentum']);
     let dataQualityStats = { dropped: 0, capped: 0, total: 0 };
 
     // ── CSV parser ────────────────────────────────────────────────────────────
@@ -96,7 +96,7 @@ const BT = (() => {
     async function loadData() {
         const notice = document.getElementById('bt-data-notice');
         try {
-            const res = await fetch('Data/Factor_Data/final.csv');
+            const res = await fetch('Data/Factor_Data/finalMonthlyLabels_aman.csv');
             if (!res.ok) throw new Error(`CSV fetch failed (HTTP ${res.status}).`);
             const parsed = parseCSV(await res.text());
 
@@ -105,8 +105,7 @@ const BT = (() => {
             const retCol = 'monthly_ret' in sample ? 'monthly_ret'
                          : 'Monthly_Return' in sample ? 'Monthly_Return'
                          : null;
-            if (!retCol) throw new Error('The website is under maintainance. We will get back soon.');
-            // if (!retCol) throw new Error('Return column not found. Expected "monthly_ret" or "Monthly_Return".');
+            if (!retCol) throw new Error('Return column not found. Expected "monthly_ret" or "Monthly_Return".');
 
             dataQualityStats = { dropped: 0, capped: 0, total: parsed.length };
             rawData = [];
@@ -329,27 +328,12 @@ const BT = (() => {
         if (!Object.values(longFilters).some(v => v && v.length)) { showError('Select at least one factor label.'); return; }
         if (currentStrategy === 'long_short' && !Object.values(shortFilters).some(v => v && v.length)) { showError('Select at least one short-side label.'); return; }
 
-        const SHORT_NAMES = {
-            'Size': 'Sz', 'Book-to-Market': 'BM', 'Op. Profitability': 'OP',
-            'Investment': 'Inv', 'Momentum': 'Mom', 'Asset Turnover': 'AT',
-            'Sales Growth': 'SG', 'Accruals': 'Acc', 'Volatility': 'Vol',
-            'Short-Term Reversal': 'STR',
-        };
         const nameParts = [];
-        for (const [f, codes] of Object.entries(longFilters)) {
-            const prefix = SHORT_NAMES[f] || f;
-            const vals = codes.map(c => FACTORS[f]?.labels[c] || c).join('/');
-            nameParts.push(`${prefix}:${vals}`);
-        }
-        
+        for (const [f, codes] of Object.entries(longFilters)) nameParts.push(codes.map(c => FACTORS[f]?.labels[c] || c).join('/'));
         let name = nameParts.join(' · ');
         if (currentStrategy === 'long_short') {
             const sp = [];
-            for (const [f, codes] of Object.entries(shortFilters)) {
-                const prefix = SHORT_NAMES[f] || f;
-                const vals = codes.map(c => FACTORS[f]?.labels[c] || c).join('/');
-                sp.push(`${prefix}:${vals}`);
-            }
+            for (const [f, codes] of Object.entries(shortFilters)) sp.push(codes.map(c => FACTORS[f]?.labels[c] || c).join('/'));
             name += ' − ' + sp.join(' · ');
         }
 

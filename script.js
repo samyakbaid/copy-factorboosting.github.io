@@ -62,12 +62,16 @@ const publicationsData = [
 function setLastUpdated() {
     const date = new Date();
     const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    document.getElementById('lastUpdated').textContent = date.toLocaleDateString('en-US', options);
+    const target = document.getElementById('lastUpdated');
+    if (target) {
+        target.textContent = date.toLocaleDateString('en-US', options);
+    }
 }
 
 // Populate publications table
 function populateTable(tableId, data) {
     const tbody = document.getElementById(tableId);
+    if (!tbody) return;
     tbody.innerHTML = '';
 
     data.forEach(pub => {
@@ -94,7 +98,12 @@ function filterPublications(type) {
     if (type === 'all') {
         return publicationsData;
     }
-    return publicationsData.filter(pub => pub.type === type);
+    const normalizedType = {
+        conferences: 'conference',
+        journals: 'journal',
+        preprints: 'preprint'
+    }[type] || type;
+    return publicationsData.filter(pub => pub.type === normalizedType);
 }
 
 // Universal tab functionality for all sections
@@ -156,7 +165,77 @@ document.addEventListener('DOMContentLoaded', () => {
     populateTable('publicationsTable', publicationsData);
     initTabs();
     initSmoothScroll();
+    initScrollReveal();
+    initHeroPreview();
+    initPointerTilt();
 });
+
+function initScrollReveal() {
+    const revealItems = document.querySelectorAll('.section, .visual-shell');
+    if (!('IntersectionObserver' in window)) {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+        return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach(item => {
+        item.classList.add('reveal-item');
+        observer.observe(item);
+    });
+}
+
+function initHeroPreview() {
+    const shell = document.querySelector('.visual-shell');
+    const controls = document.querySelectorAll('.visual-mode');
+    if (!shell || controls.length === 0) return;
+
+    controls.forEach(control => {
+        control.addEventListener('click', () => {
+            window.setVisualPreview(control.dataset.preview || 'all');
+        });
+    });
+}
+
+window.setVisualPreview = function setVisualPreview(mode) {
+    const shell = document.querySelector('.visual-shell');
+    const controls = document.querySelectorAll('.visual-mode');
+    if (!shell || controls.length === 0) return;
+
+    const nextMode = mode || 'all';
+    shell.dataset.focus = nextMode;
+    controls.forEach(control => {
+        control.classList.toggle('active', control.dataset.preview === nextMode);
+    });
+};
+
+function initPointerTilt() {
+    const shell = document.querySelector('.visual-shell');
+    if (!shell || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    shell.addEventListener('pointermove', event => {
+        if (window.innerWidth < 980) return;
+
+        const rect = shell.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width - 0.5;
+        const y = (event.clientY - rect.top) / rect.height - 0.5;
+
+        shell.style.setProperty('--tilt-x', `${4 - y * 5}deg`);
+        shell.style.setProperty('--tilt-y', `${-6 + x * 7}deg`);
+    });
+
+    shell.addEventListener('pointerleave', () => {
+        shell.style.removeProperty('--tilt-x');
+        shell.style.removeProperty('--tilt-y');
+    });
+}
 
 function downloadFile(filename) {
     const link = document.createElement('a');
@@ -234,4 +313,3 @@ function copyBibtex() {
         alert('Failed to copy BibTeX. Please copy manually.');
     });
 }
-

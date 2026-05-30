@@ -499,12 +499,13 @@
     <header class="hero bt-hero">
         <div class="hero-content">
             <h1>Cross-Sectional Portfolio Analysis</h1>
-            <p class="subtitle">Fama-French factor portfolios on Indian equities &mdash; compare up to 4 strategies</p>
+
         </div>
     </header>
 
     <div class="container" style="margin-bottom: 0; padding-bottom: 0;">
         <div class="section" style="margin-bottom: 0;">
+            <p class="subtitle">Fama-French factor portfolios on Indian equities &mdash; compare up to 4 strategies</p>
             <h2 class="section-title" style="font-size: 1.25rem; margin-bottom: 0.75rem;">How to Use</h2>
             <p style="color: var(--text-secondary); margin-bottom: 0.75rem;">
                 This tool lets you build and compare portfolios based on Fama-French factors. Select characteristics
@@ -549,16 +550,7 @@
             <!-- ── SIDEBAR ──────────────────────────────────────────── -->
             <aside class="bt-sidebar">
                 <!-- Saved portfolios -->
-                <div>
-                    <div class="bt-sec-label">Portfolios</div>
-                    <div class="bt-portfolio-shelf" id="bt-portfolio-shelf"></div>
-                    <div class="bt-shelf-limit" id="bt-shelf-limit">Maximum 4 portfolios. Remove one to add another.
-                    </div>
-                    <div style="display:flex;gap:6px;margin-top:8px;">
-                        <button class="bt-add-btn" id="bt-add-btn" onclick="BT.addPortfolio()">+ Add Portfolio</button>
-                    </div>
-                </div>
-                <div class="bt-divider"></div>
+
 
                 <!-- Strategy -->
                 <div>
@@ -573,17 +565,19 @@
 
                 <!-- Factor picker: choose which factors to use -->
                 <div>
-                    <div class="bt-sec-label">Active Factors <span style="font-weight:400;text-transform:none;letter-spacing:0;">(click to toggle)</span></div>
+                    <div class="bt-sec-label">Active Factors <span
+                            style="font-weight:400;text-transform:none;letter-spacing:0;">(click to toggle)</span></div>
                     <div id="bt-factor-picker"></div>
                 </div>
-                
+
                 <div class="bt-divider"></div>
-                
+
                 <!-- Long factors (pills for active factors only) -->
                 <div>
                     <div class="bt-sec-label">Portfolio Selection</div>
                     <div class="bt-factor-panel">
-                        <div class="bt-factor-panel-title"><span class="bt-badge bt-badge-long">LONG</span> Portfolio</div>
+                        <div class="bt-factor-panel-title"><span class="bt-badge bt-badge-long">LONG</span> Portfolio
+                        </div>
                         <div id="bt-long-factors"></div>
                     </div>
                 </div>
@@ -601,7 +595,7 @@
 
                 <!-- Benchmark selection (for IR + chart overlay) -->
                 <div class="bt-divider"></div>
-                
+
                 <div>
                     <div class="bt-sec-label">Benchmark Index</div>
                     <p style="font-size:10px;color:#94a3b8;margin:0 0 6px;">
@@ -658,7 +652,16 @@
                             onclick="BT.setToggle('bt-universe-toggle',this)">Top 300</button>
                     </div>
                 </div>
-
+                <div>
+                    <div class="bt-sec-label">Portfolios</div>
+                    <div class="bt-portfolio-shelf" id="bt-portfolio-shelf"></div>
+                    <div class="bt-shelf-limit" id="bt-shelf-limit">Maximum 4 portfolios. Remove one to add another.
+                    </div>
+                    <div style="display:flex;gap:6px;margin-top:8px;">
+                        <button class="bt-add-btn" id="bt-add-btn" onclick="BT.addPortfolio()">+ Add Portfolio</button>
+                    </div>
+                </div>
+                <div class="bt-divider"></div>
                 <div id="bt-error-msg" class="bt-error-msg"></div>
                 <button class="bt-run-btn" id="bt-run-btn" onclick="BT.runAll()" disabled>Loading data&hellip;</button>
             </aside>
